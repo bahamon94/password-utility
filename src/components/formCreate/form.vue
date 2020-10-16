@@ -4,7 +4,7 @@
       <v-form>
         <v-row>
           <v-col cols="12" md="4" xs="12">
-          <AccountName  :logo_url="infoAccount.logo_url" :account_name="infoAccount.account_name" :username="infoAccount.username" />
+          <AccountName  :logo_url="dataInforAccount.logo_url" :account_name="dataInforAccount.account_name" :username="dataInforAccount.username" />
           </v-col>
         </v-row>
         <v-row>
@@ -45,14 +45,14 @@
         <v-alert
           >Create at
           <p>
-            {{ infoAccount.created_at | dateParse(infoAccount.created_at) }}
+            {{ dataInforAccount.created_at | dateParse(dataInforAccount.created_at)  }}
           </p>
         </v-alert>
         <div>
           <v-btn
             color="error"
             class="ma-2 white--text"
-            @click="loader = 'loading3'"
+            @click="deleteAccount"
           >
             Delete
             <v-icon right dark> mdi-delete </v-icon>
@@ -66,11 +66,14 @@
 <script>
 import AccountName from "../accountName/accountName";
 import moment from "moment";
+import utils from '@/mixins/utils'
+
 
 export default {
   components: {
     AccountName,
   },
+  mixins :[utils],
   props: {
     infoAccount: {
       type: Object,
@@ -85,22 +88,41 @@ export default {
       name: "",
       site: "",
       dataInforAccount: [],
+      idAccount: 0
     };
   },
   mounted() {
     this.startData()
   },
   methods:{
+    deleteAccount(){
+      this.$showAlertConfirm('Notificación','Are you sure you want delete user record').then((result) => {
+        if (result) {
+        this.$axios.delete(`/passwords/${this.idAccount}`)
+        this.dataInforAccount = []
+        this.$store.commit('set_infoAccount', [])
+        this.startData()
+        this.$showInfoSuccessNotify()
+        this.updateListAccount()
+        }
+      })
+
+    },
+    updateListAccount(){
+      console.log('update List');
+      this.$emit('updateList')      
+    },
     startData(){
-    this.dataInforAccount =  this.$store.getters.get_infoAccount
-    this.password = this.dataInforAccount.password;
-    this.name = this.dataInforAccount.account_name;
-    this.site = this.dataInforAccount.site_url
+      this.dataInforAccount =  this.$store.getters.get_infoAccount
+      this.password = this.dataInforAccount.password
+      this.name = this.dataInforAccount.account_name
+      this.site = this.dataInforAccount.site_url
+      this.idAccount = this.dataInforAccount.id
     }
   },
   filters: {
     dateParse(value) {
-      return moment(value).format("MMMM Do YYYY, h:mm:ss a");
+      return value ? moment(value).format("MMMM Do YYYY, h:mm:ss a") : ''
     },
   },
 };

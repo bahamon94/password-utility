@@ -21,7 +21,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <formulario-create ref="formInfo" v-if="loadingForm" :infoAccount="formAccountInfo" v-model="formAccountInfo" />
+    <formulario-create ref="formInfo" v-if="loadingForm" :infoAccount="formAccountInfo" v-model="formAccountInfo" @updateList="viewAccounts" />
   </v-app>
 </template>
 
