@@ -1,39 +1,68 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer width="400px"  absolute app>
+    <v-navigation-drawer width="400px" absolute app>
       <template v-slot:prepend>
         <v-list-item two-line>
-          <v-text-field class="pt-2" outlined label="Prepend inner" prepend-inner-icon="mdi-map-marker"></v-text-field>
+          <v-text-field
+            class="pt-2"
+            outlined
+            prepend-inner-icon="mdi-card-search"
+            placeholder="Search"
+          ></v-text-field>
         </v-list-item>
       </template>
-     
+
       <v-list>
-        <v-list-item v-for="n in 13" :key="n" link>
-          <AccountName/>
-        </v-list-item>
+      <v-alert v-if="dataUsernames.lenght " type="info">There is no information</v-alert>
+
+        <div v-else v-for="(item,index) in dataUsernames " :key="index" link @click="viewFormInfo(item)" class="pa-1">
+          <AccountName v-if="showAccount" :logo_url="item.logo_url" :account_name="item.account_name" :username="item.username" />
+        </div>
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
-      <v-container class="py-8 px-6" fluid>
-      <v-form ref="form"  v-model="valid"  lazy-validation>
-        <v-text-field
-            outlined
-          ></v-text-field>
-      </v-form>
-      </v-container>
-    </v-main>
+    <formulario-create ref="formInfo" v-if="loadingForm" :infoAccount="formAccountInfo" v-model="formAccountInfo" />
   </v-app>
 </template>
 
 <script>
 // @ is an alias to /src
-import AccountName from '@/components/accountName/accountName.vue'
+import AccountName from "@/components/accountName/accountName.vue";
+import formulario from "@/components/formCreate/form.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    AccountName
-  }
-}
+    AccountName,
+    "formulario-create": formulario,
+  },
+  data() {
+    return {
+      loadingForm : true,
+      dataUsernames: [],
+      showAccount : false,
+      formAccountInfo: {}
+    };
+  },
+  watch:{
+    formAccountInfo(){
+      this.$refs.formInfo.startData()
+    }
+    
+  },
+  mounted() {
+    this.viewAccounts();
+  },
+  methods: {
+    async viewAccounts() {
+      const response = await this.$axios("/passwords");
+      this.dataUsernames = response.data;
+      this.showAccount = true
+    },
+    viewFormInfo(item){
+      this.$store.commit('set_infoAccount', item)
+      this.formAccountInfo = item
+    }
+  },
+};
 </script>
