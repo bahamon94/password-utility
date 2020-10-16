@@ -40,5 +40,5 @@ npm run dev
 
 * **Brayan Bahamon** - *Trabajo Inicial* - [bahamon756@hotmail.com](https://github.com/bahamon94)
 
-# RentApp
+# Passwprd Utility App
 
