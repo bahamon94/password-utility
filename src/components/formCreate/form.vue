@@ -99,18 +99,39 @@ export default {
       this.$showAlertConfirm('Notificación','Are you sure you want delete user record').then((result) => {
         if (result) {
         this.$axios.delete(`/passwords/${this.idAccount}`)
-        this.dataInforAccount = []
-        this.$store.commit('set_infoAccount', [])
-        this.startData()
+        this.dataNull
         this.$showInfoSuccessNotify()
         this.updateListAccount()
         }
       })
 
     },
+    suAccount(){
+      console.log(this.idAccount);
+      const dtoAccount = {
+        "account_name": this.name,
+        "username":this.dataInforAccount.username ,
+        "password": this.password,
+        "site_url": this.site,
+        "logo_url": this.dataInforAccount.logo_url
+      }
+      if (this.idAccount != 0) {
+        this.$axios.put(`passwords/${this.idAccount}`, dtoAccount)
+      } else {
+        this.$axios.post('passwords', dtoAccount)
+        dtoAccount.created_at = Date.now()
+      }
+      this.dataNull()
+      this.updateListAccount()
+    },
     updateListAccount(){
-      console.log('update List');
       this.$emit('updateList')      
+    },
+    dataNull(){
+      this.dataInforAccount = []
+      this.$store.commit('set_infoAccount', [])
+      this.startData()
+
     },
     startData(){
       this.dataInforAccount =  this.$store.getters.get_infoAccount

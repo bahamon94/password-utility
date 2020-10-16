@@ -9,6 +9,14 @@
             prepend-inner-icon="mdi-card-search"
             placeholder="Search"
           ></v-text-field>
+          <v-btn
+           
+            color="success"
+            class="ma-2 white--text"
+            @click="saveAccount"
+          >
+            <v-icon right dark> mdi-plus-box </v-icon>
+          </v-btn>
         </v-list-item>
       </template>
 
@@ -58,6 +66,9 @@ export default {
       const response = await this.$axios("/passwords");
       this.dataUsernames = response.data;
       this.showAccount = true
+    },
+    saveAccount(){
+      this.$refs.formInfo.suAccount()
     },
     viewFormInfo(item){
       this.$store.commit('set_infoAccount', item)
