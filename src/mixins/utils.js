@@ -3,10 +3,10 @@ const utils = {
     methods:{
          /**Generator password ramdon*/
     $password_generator(){
-        let caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ23467890@";
-        let contraseña = "";
-        for (let i=0; i<8; i++) contraseña += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
-        return contraseña;
+        let caracteres = "-abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ23467890@{}+";
+        let password = "";
+        for (let i=0; i<8; i++) password += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
+        return password;
     },
 
     /**Alerts */

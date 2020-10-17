@@ -16,6 +16,7 @@
         <v-row>
           <v-col cols="12" md="6" xs="12">
             <v-text-field
+              id="inPwd"
               label="password"
               v-model="password"
               :append-icon="icon ? 'mdi-eye-off' : 'mdi-eye'"
@@ -28,8 +29,8 @@
 
           <v-col cols="12" md="6" xs="12">
             <div>
-              <v-btn outlined text class="ma-2">Generate</v-btn>
-              <v-btn outlined text>Copy</v-btn>
+              <v-btn @click="generatePassworsAut" outlined text class="ma-2">Generate</v-btn>
+              <v-btn outlined text @click="copyInputPassword">Copy</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -139,6 +140,19 @@ export default {
       this.name = this.dataInforAccount.account_name
       this.site = this.dataInforAccount.site_url
       this.idAccount = this.dataInforAccount.id
+    },
+    generatePassworsAut(){
+      this.password = this.$password_generator() 
+    },
+    copyInputPassword(){
+      this.icon = !this.icon
+      setTimeout(() => {
+      let element = document.getElementById('inPwd')
+      element.select()
+      document.execCommand("Copy")
+      this.icon = !this.icon
+      }, 1);
+
     }
   },
   filters: {
