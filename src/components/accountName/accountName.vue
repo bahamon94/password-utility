@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="344" outlined>
+  <v-card class="mx-auto" max-width="344" outlined v-on:click="functionExtra()">
     <v-list-item three-line>
       <v-avatar class="profile mr-2" color="grey" tile>
 
@@ -34,5 +34,10 @@ export default {
       default: '',
     },
   },
+  methods:{
+    functionExtra(){
+      this.$emit('eventTo')
+    }
+  }
 };
 </script>

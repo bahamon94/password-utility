@@ -33,7 +33,7 @@ const utils = {
           .catch(err => reject({ error: err }))
       })
     },
-    $showInfoSuccessNotify() {
+    $showInfoSuccessNotify(type = 'success' ,title = 'Successful operation') {
         const Toast = this.Swal.mixin({
           toast: true,
           position: 'top',
@@ -44,8 +44,8 @@ const utils = {
         })
   
         Toast.fire({
-          type: 'success',
-          title: 'Successful operation'
+          type: type ,
+          title: title
         })
       },
     }
