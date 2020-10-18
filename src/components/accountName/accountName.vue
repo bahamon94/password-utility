@@ -1,8 +1,10 @@
 <template>
-  <v-card class="mx-auto" max-width="344" outlined>
+  <v-card class="mx-auto" max-width="344" outlined v-on:click="functionExtra()">
     <v-list-item three-line>
       <v-avatar class="profile mr-2" color="grey" tile>
-        <v-img :src="logo_url"></v-img>
+
+        <v-img v-if="logo_url" :src="logo_url"></v-img>
+         <span v-else class="white--text headline">{{ account_name.substr(-20,1).toUpperCase() }}</span>
       </v-avatar>
       <v-list-item-content>
         <v-list-item-title class="headline">
@@ -32,5 +34,10 @@ export default {
       default: '',
     },
   },
+  methods:{
+    functionExtra(){
+      this.$emit('eventTo')
+    }
+  }
 };
 </script>
